@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/pages/character_page.dart';
-import 'package:rick_and_morty/pages/heroes_page.dart';
+import 'package:rick_and_morty/pages/episodes_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
     CharacterPage(
       title: 'Character Page',
     ),
-    const HeroesPage(),
+    const EpisodesPage(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -32,17 +32,17 @@ class _HomePageState extends State<HomePage> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.movie,
+              Icons.person,
               size: 30,
             ),
             label: 'Character',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.person,
+              Icons.movie,
               size: 30,
             ),
-            label: 'Heroes',
+            label: 'Episodes',
           ),
         ],
       ),

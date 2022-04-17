@@ -4,14 +4,15 @@ import 'package:rick_and_morty/data/models/character_model.dart';
 
 class CharacterRepo {
   final url = "https://rickandmortyapi.com/api/character";
-  Future<CharacterModel> getCharacter(int page, String name) async {
-    try {
-      var response = await http.get(Uri.parse(url + '?page=$page&name=$name'));
+  Future<CharacterModel> getCharacter(String name) async {
+    http.Response response = await http.get(Uri.parse(url + '?name=$name'));
+    return characterModelFromJson(response.body);
+  }
 
-      var jsonResult = json.decode(response.body);
-      return CharacterModel.fromJson(jsonResult);
-    } catch (e) {
-      throw Exception(e.toString());
-    }
+  Future getCharacters(
+    int page,
+  ) async {
+    http.Response response = await http.get(Uri.parse(url + '?page=$page'));
+    return json.decode(response.body);
   }
 }

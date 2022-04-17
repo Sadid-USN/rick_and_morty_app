@@ -1,9 +1,30 @@
-part of 'character_bloc.dart';
+enum Status {
+  initial,
+  loadisng,
+  success,
+  empty,
+  error,
+}
 
-@freezed
-class CharacterState with _$CharacterState {
-  const factory CharacterState.loading() = CharacterStateLoading;
-  const factory CharacterState.loaded(
-      {required CharacterModel characterModelLoaded}) = CharacterStateLoaded;
-  const factory CharacterState.error() = CharacterStateError;
+class CharacterCubitState {
+  final Status status;
+  final List characterList;
+  final int? currentPage;
+
+  CharacterCubitState({
+    this.status = Status.initial,
+    required this.characterList,
+    this.currentPage = 1,
+  });
+  CharacterCubitState copyWith({
+    Status? status,
+    List? characterList,
+    int? currentPage,
+  }) {
+    return CharacterCubitState(
+      status: status ?? this.status,
+      characterList: characterList ?? this.characterList,
+      currentPage: this.currentPage,
+    );
+  }
 }

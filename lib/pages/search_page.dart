@@ -10,23 +10,22 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  @override
-  void initState() {
-    context
-        .read<CharacterBloc>()
-        .add(const CharacterEvent.fetch(name: '', page: 1));
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   // context
+  //   //     .read<CharacterBloc>()
+  //   //     .add(const CharacterEvent.fetch(name: '', page: 1));
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final state = context.read<CharacterBloc>().state;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
           child: TextField(
             style: const TextStyle(color: Colors.white),
             cursorColor: Colors.white,
@@ -45,33 +44,34 @@ class _SearchPageState extends State<SearchPage> {
               hintStyle: const TextStyle(color: Colors.white),
             ),
             onChanged: (value) {
-              context.read<CharacterBloc>().add(
-                    CharacterEvent.fetch(name: value, page: 1),
-                  );
+              // context.read<CharacterBloc>().add(
+              //       CharacterEvent.fetch(name: value, page: 1),
+              //);
             },
           ),
         ),
-        state.when(
-          loading: () {
-            return Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  CircularProgressIndicator(
-                    strokeWidth: 2,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text('Loading...'),
-                ],
-              ),
-            );
-          },
-          loaded: (characterModelLoaded) =>
-              Text('${characterModelLoaded.info}'),
-          error: () => const Text('Nothing found'),
-        ),
+        // state.when(
+        //   loading: () {
+        //     return Center(
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.center,
+        //         children: const [
+        //           CircularProgressIndicator(
+        //             strokeWidth: 2,
+        //           ),
+        //           SizedBox(
+        //             width: 10,
+        //           ),
+        //           Text('Loading...'),
+        //         ],
+        //       ),
+        //     );
+        //   },
+        //   loaded: (characterModelLoaded) {
+        //     return Text('${characterModelLoaded.info}');
+        //   },
+        //   error: () => const Text('Nothing found'),
+        // ),
       ],
     );
   }

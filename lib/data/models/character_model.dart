@@ -1,41 +1,38 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-part 'character_model.freezed.dart';
-part 'character_model.g.dart';
+import 'dart:convert';
 
-@freezed
-class CharacterModel with _$CharacterModel {
-  const factory CharacterModel({
-    required Info info,
-    required List<Results> results,
-  }) = _CharacterModel;
+CharacterModel characterModelFromJson(String str) =>
+    CharacterModel.fromJson(json.decode(str));
 
-  factory CharacterModel.fromJson(Map<String, dynamic> json) =>
-      _$CharacterModelFromJson(json);
-}
+String characterModelToJson(CharacterModel data) => json.encode(data.toJson());
 
-@freezed
-class Info with _$Info {
-  const factory Info({
-    required int count,
-    required int pages,
-    String? next,
-    String? prev,
-  }) = _Info;
+class CharacterModel {
+  CharacterModel({
+    required this.name,
+    required this.status,
+    required this.species,
+    required this.gender,
+    required this.image,
+  });
 
-  factory Info.fromJson(Map<String, dynamic> json) => _$InfoFromJson(json);
-}
+  String name;
+  String status;
+  String species;
+  String gender;
+  String image;
 
-@freezed
-class Results with _$Results {
-  const factory Results({
-    required int id,
-    required String name,
-    required String status,
-    required String species,
-    required String gender,
-    required String image,
-  }) = _Results;
+  factory CharacterModel.fromJson(Map<String, dynamic> json) => CharacterModel(
+        name: json["name"],
+        status: json["status"],
+        species: json["species"],
+        gender: json["gender"],
+        image: json["image"],
+      );
 
-  factory Results.fromJson(Map<String, dynamic> json) =>
-      _$ResultsFromJson(json);
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "status": status,
+        "species": species,
+        "gender": gender,
+        "image": image,
+      };
 }
