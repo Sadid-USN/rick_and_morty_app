@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:rick_and_morty/bloc/character_bloc.dart';
 import 'package:rick_and_morty/bloc/character_state.dart';
 import 'package:rick_and_morty/data/models/character_model.dart';
@@ -63,57 +64,66 @@ class _CharacterPageState extends State<CharacterPage> {
         } else if (state.status == Status.success ||
             state.status == Status.empty) {
           return Scrollbar(
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: state.characterList.length,
-              itemBuilder: (context, index) {
-                if (index == state.characterList.length) {
-                  if (state.status == Status.success) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+            child: AnimationLimiter(
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: state.characterList.length,
+                itemBuilder: (context, index) {
+                  if (index == state.characterList.length) {
+                    if (state.status == Status.success) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return Center(
+                        child: Text(
+                          '⭐️⭐️⭐️ The End ⭐️⭐️⭐️',
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 25),
+                        ),
+                      );
+                    }
                   } else {
-                    return Center(
-                      child: Text(
-                        '⭐️⭐️⭐️ The End ⭐️⭐️⭐️',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 25),
+                    CharacterModel item = state.characterList[index];
+                    return AnimationConfiguration.staggeredGrid(
+                      position: index,
+                      duration: const Duration(milliseconds: 400),
+                      columnCount: state.characterList.length,
+                      child: ScaleAnimation(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return BlocProvider(
+                                create: (context) =>
+                                    CharacterCubit()..getCharacters(),
+                                child: CharacterDetails(
+                                  item: item,
+                                ),
+                              );
+                            }));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 16, top: 16),
+                            child: Stack(
+                              alignment: Alignment.centerLeft,
+                              children: [
+                                CardModel(
+                                  item: item,
+                                ),
+                                ImageCard(
+                                  item: item,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     );
                   }
-                } else {
-                  CharacterModel item = state.characterList[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return BlocProvider(
-                          create: (context) =>
-                              CharacterCubit()..getCharacters(),
-                          child: CharacterDetails(
-                            item: item,
-                          ),
-                        );
-                      }));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16, top: 16),
-                      child: Stack(
-                        alignment: Alignment.centerLeft,
-                        children: [
-                          CardModel(
-                            item: item,
-                          ),
-                          ImageCard(
-                            item: item,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-              },
+                },
+              ),
             ),
           );
         } else {
@@ -129,25 +139,28 @@ class ImageCard extends StatelessWidget {
   final CharacterModel item;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 30),
-      height: 130,
-      width: 150,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        image: DecorationImage(
-            image: NetworkImage(
-              item.image,
+    return Hero(
+      tag: item.image,
+      child: Container(
+        margin: const EdgeInsets.only(top: 30),
+        height: 130,
+        width: 150,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          image: DecorationImage(
+              image: NetworkImage(
+                item.image,
+              ),
+              fit: BoxFit.cover),
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black38,
+              offset: Offset(0.0, 2.0),
+              blurRadius: 6.0,
             ),
-            fit: BoxFit.cover),
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black38,
-            offset: Offset(0.0, 2.0),
-            blurRadius: 6.0,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
