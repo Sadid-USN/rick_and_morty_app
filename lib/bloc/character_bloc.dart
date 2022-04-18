@@ -19,7 +19,7 @@ class CharacterCubit extends Cubit<CharacterCubitState> {
         emit(state.copyWith(status: Status.loading));
       }
       try {
-        if (state.currentPage != null) {
+        if (state.currentPage != 0) {
           var data = await characterRepo.getCharacters(
             state.currentPage,
           );
@@ -44,15 +44,11 @@ class CharacterCubit extends Cubit<CharacterCubitState> {
               characterList: state.characterList + lst,
             ));
           } else {
-            print(int.parse(page.split('=')[1]));
-            print('111');
-            print(page);
-            print('222');
-            print(page.split('='));
-            print('333');
-            print(page.split('=')[0]);
-            print('444');
-            print(page.split('=')[1]);
+            // print(int.parse(page.split('=')[1]));
+            // print('111');
+            // print(page);
+            // print('222');
+
             emit(state.copyWith(
               status: Status.success,
               characterList: state.characterList + lst,

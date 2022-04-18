@@ -7,6 +7,7 @@ import 'package:rick_and_morty/bloc/character_state.dart';
 import 'package:rick_and_morty/data/models/character_model.dart';
 import 'package:rick_and_morty/data/repository/character_repo.dart';
 import 'package:rick_and_morty/pages/character_details.dart';
+import 'package:rick_and_morty/pages/search_page.dart';
 
 class CharacterPage extends StatefulWidget {
   CharacterPage({Key? key, required this.title}) : super(key: key);
@@ -55,9 +56,6 @@ class _CharacterPageState extends State<CharacterPage> {
       ),
       body: BlocBuilder<CharacterCubit, CharacterCubitState>(
           builder: (context, state) {
-        // print(state.characterList);
-        // print(state.currentPage);
-        // print(state.status);
         if (state.status == Status.loading || state.status == Status.initial) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -67,7 +65,7 @@ class _CharacterPageState extends State<CharacterPage> {
           return Scrollbar(
             child: ListView.builder(
               controller: _scrollController,
-              itemCount: state.characterList.length + 1,
+              itemCount: state.characterList.length,
               itemBuilder: (context, index) {
                 if (index == state.characterList.length) {
                   if (state.status == Status.success) {
@@ -75,10 +73,12 @@ class _CharacterPageState extends State<CharacterPage> {
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    return const Center(
+                    return Center(
                       child: Text(
-                        'No more characters....',
-                        style: TextStyle(color: Colors.black, fontSize: 25),
+                        '⭐️⭐️⭐️ The End ⭐️⭐️⭐️',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 25),
                       ),
                     );
                   }
@@ -88,7 +88,13 @@ class _CharacterPageState extends State<CharacterPage> {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return const CharacterDetails();
+                        return BlocProvider(
+                          create: (context) =>
+                              CharacterCubit()..getCharacters(),
+                          child: CharacterDetails(
+                            item: item,
+                          ),
+                        );
                       }));
                     },
                     child: Padding(
@@ -152,77 +158,67 @@ class CardModel extends StatelessWidget {
   final CharacterModel item;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.topCenter,
-      padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(12.0)),
-        color: Color(0xFFDAECE4),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black38,
-            offset: Offset(0.0, 2.0),
-            blurRadius: 6.0,
-          ),
-        ],
-      ),
-      height: 200,
-      width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        // crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Container(
-                  width: 200,
-                  child: Text(
-                    item.name,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: TextStyle(
-                        color: Colors.blueGrey[900],
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18),
-                  ),
-                ),
-              ),
-              Text(
-                item.id.toString(),
-                style: TextStyle(
-                    color: Colors.blueGrey[700],
-                    fontWeight: FontWeight.w600,
-                    fontSize: 30),
+    return Column(
+      children: [
+        Container(
+          alignment: Alignment.topCenter,
+          padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(12.0)),
+            color: Color(0xFFDAECE4),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black38,
+                offset: Offset(0.0, 2.0),
+                blurRadius: 6.0,
               ),
             ],
           ),
-          // Text(
-          //   'Learn more about this character',
-          //   style: TextStyle(
-          //       color: Colors.blueGrey[500],
-          //       fontWeight: FontWeight.w600,
-          //       fontSize: 18),
-          // ),
-          // Text(
-          //   'gender',
-          //   style: TextStyle(
-          //       color: Colors.blueGrey[500],
-          //       fontWeight: FontWeight.w600,
-          //       fontSize: 18),
-          // ),
-          // Text(
-          //   'status',
-          //   style: TextStyle(
-          //       color: Colors.blueGrey[500],
-          //       fontWeight: FontWeight.w600,
-          //       fontSize: 18),
-          // ),
-        ],
-      ),
+          height: 200,
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Container(
+                      width: 200,
+                      child: Text(
+                        item.name,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                            color: Colors.blueGrey[900],
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    item.id.toString(),
+                    style: TextStyle(
+                        color: Colors.blueGrey[700],
+                        fontWeight: FontWeight.w600,
+                        fontSize: 30),
+                  ),
+                ],
+              ),
+              // Text(
+              //   'Learn more about this character',
+              //   style: TextStyle(
+              //       color: Colors.blueGrey[500],
+              //       fontWeight: FontWeight.w600,
+              //       fontSize: 18),
+              // ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

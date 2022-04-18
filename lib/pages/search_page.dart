@@ -10,14 +10,6 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  // @override
-  // void initState() {
-  //   // context
-  //   //     .read<CharacterBloc>()
-  //   //     .add(const CharacterEvent.fetch(name: '', page: 1));
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -43,35 +35,9 @@ class _SearchPageState extends State<SearchPage> {
               hintText: 'Search',
               hintStyle: const TextStyle(color: Colors.white),
             ),
-            onChanged: (value) {
-              // context.read<CharacterBloc>().add(
-              //       CharacterEvent.fetch(name: value, page: 1),
-              //);
-            },
+            onChanged: (value) {},
           ),
         ),
-        // state.when(
-        //   loading: () {
-        //     return Center(
-        //       child: Row(
-        //         mainAxisAlignment: MainAxisAlignment.center,
-        //         children: const [
-        //           CircularProgressIndicator(
-        //             strokeWidth: 2,
-        //           ),
-        //           SizedBox(
-        //             width: 10,
-        //           ),
-        //           Text('Loading...'),
-        //         ],
-        //       ),
-        //     );
-        //   },
-        //   loaded: (characterModelLoaded) {
-        //     return Text('${characterModelLoaded.info}');
-        //   },
-        //   error: () => const Text('Nothing found'),
-        // ),
       ],
     );
   }
