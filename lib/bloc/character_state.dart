@@ -1,6 +1,6 @@
 enum Status {
   initial,
-  loadisng,
+  loading,
   success,
   empty,
   error,
@@ -9,7 +9,7 @@ enum Status {
 class CharacterCubitState {
   final Status status;
   final List characterList;
-  final int? currentPage;
+  final int currentPage;
 
   CharacterCubitState({
     this.status = Status.initial,
@@ -24,7 +24,7 @@ class CharacterCubitState {
     return CharacterCubitState(
       status: status ?? this.status,
       characterList: characterList ?? this.characterList,
-      currentPage: this.currentPage,
+      currentPage: currentPage ?? this.currentPage,
     );
   }
 }

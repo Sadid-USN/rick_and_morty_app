@@ -7,6 +7,7 @@ String characterModelToJson(CharacterModel data) => json.encode(data.toJson());
 
 class CharacterModel {
   CharacterModel({
+    required this.id,
     required this.name,
     required this.status,
     required this.species,
@@ -19,14 +20,15 @@ class CharacterModel {
   String species;
   String gender;
   String image;
+  int id;
 
   factory CharacterModel.fromJson(Map<String, dynamic> json) => CharacterModel(
-        name: json["name"],
-        status: json["status"],
-        species: json["species"],
-        gender: json["gender"],
-        image: json["image"],
-      );
+      name: json["name"],
+      status: json["status"],
+      species: json["species"],
+      gender: json["gender"],
+      image: json["image"],
+      id: json['id']);
 
   Map<String, dynamic> toJson() => {
         "name": name,
@@ -34,5 +36,6 @@ class CharacterModel {
         "species": species,
         "gender": gender,
         "image": image,
+        "id": id,
       };
 }

@@ -9,9 +9,7 @@ class CharacterRepo {
     return characterModelFromJson(response.body);
   }
 
-  Future getCharacters(
-    int page,
-  ) async {
+  Future getCharacters(int page) async {
     http.Response response = await http.get(Uri.parse(url + '?page=$page'));
     return json.decode(response.body);
   }

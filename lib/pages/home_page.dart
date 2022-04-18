@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/pages/character_page.dart';
 import 'package:rick_and_morty/pages/episodes_page.dart';
+
+import '../bloc/character_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,8 +15,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int pageIndex = 0;
   final pages = [
-    CharacterPage(
-      title: 'Character Page',
+    BlocProvider(
+      create: (context) => CharacterCubit()..getCharacters(),
+      child: CharacterPage(
+        title: 'Character Page',
+      ),
     ),
     const EpisodesPage(),
   ];
